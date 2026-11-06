@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1220">
+  <title>QR & Barcode Studio Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#080e19;--surface:#101a2b;--surface2:#152238;--border:#263852;--text:#f4f7fb;--muted:#9aabc2;--orange:#ff6b1a;--blue:#4d8dff;--green:#28c58a;--danger:#ff647c;--shadow:0 18px 55px rgba(0,0,0,.28);--radius:18px}
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(circle at 80% -10%,#1a2c49 0,transparent 34%),var(--bg);color:var(--text);font-family:Vazirmatn,Tahoma,sans-serif;min-height:100vh}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .app{max-width:1440px;margin:auto;padding:22px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:13px}
+    .brand-icon{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,var(--orange),#ff9a4d);display:grid;place-items:center;color:#101827;box-shadow:0 8px 24px #ff6b1a38}
+    .brand h1{font-size:19px;line-height:1.4;margin:0;font-weight:800;direction:ltr;text-align:right}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:11px}
+    .top-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+    .pill{border:1px solid var(--border);background:#111d30;color:#c8d5e7;border-radius:999px;padding:8px 13px;font-size:12px}
+    .layout{display:grid;grid-template-columns:235px minmax(0,1fr);gap:18px}
+    .sidebar,.panel,.hero{background:linear-gradient(160deg,#111d30,#0e1828);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .sidebar{padding:14px;height:max-content;position:sticky;top:14px}
+    .side-label{font-size:10px;color:#71839c;padding:9px 11px 7px}
+    .nav{display:flex;align-items:center;gap:11px;width:100%;padding:12px;border:0;background:transparent;color:#b7c5d8;border-radius:12px;text-align:right;font-size:13px;margin:3px 0}
+    .nav .ico{width:18px;height:18px;flex-shrink:0;color:#7f92aa}
+    .nav.active{background:linear-gradient(90deg,#ff6b1a25,#ff6b1a0a);color:#fff;border:1px solid #ff6b1a4a}
+    .nav.active .ico{color:var(--orange)}
+    .side-note{margin-top:18px;padding:12px;background:#0b1423;border:1px solid #20324c;border-radius:13px;color:var(--muted);font-size:11px;line-height:1.9}
+    .main{min-width:0}
+    .hero{padding:22px 24px;margin-bottom:17px;display:flex;align-items:center;justify-content:space-between;gap:15px;overflow:hidden;position:relative;flex-wrap:wrap}
+    .hero h2{margin:0 0 5px;font-size:21px}
+    .hero p{margin:0;color:var(--muted);font-size:12px}
+    .hero-tag{z-index:1;border:1px solid #ff6b1a55;color:#ff9a63;background:#ff6b1a12;padding:8px 12px;border-radius:10px;font-size:11px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+    .content-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:17px}
+    .panel{padding:20px;margin-bottom:17px}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px;flex-wrap:wrap}
+    .panel-head h3{margin:0;font-size:15px;display:flex;align-items:center;gap:8px}
+    .panel-head h3 .ico{width:18px;height:18px;color:var(--orange)}
+    .sub{color:var(--muted);font-size:11px}
+    .field{margin-bottom:14px}
+    label{display:block;color:#c6d2e2;font-size:12px;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+    label .ico{width:14px;height:14px;color:var(--muted)}
+    input,select,textarea{width:100%;background:#0a1423;border:1px solid #2a3d59;color:#f5f7fb;border-radius:11px;padding:11px 12px;outline:none;transition:.2s}
+    input:focus,select:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ff6b1a18}
+    textarea{min-height:106px;resize:vertical;line-height:1.9}
+    input[type=color]{height:43px;padding:4px}
+    input[type=range]{padding:0;accent-color:var(--orange)}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{border:1px solid transparent;border-radius:11px;padding:11px 15px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+    .btn .ico{width:15px;height:15px}
+    .btn:disabled{opacity:.4;cursor:not-allowed}
+    .btn-primary{background:linear-gradient(135deg,var(--orange),#ff873f);color:#151b26;box-shadow:0 7px 18px #ff6b1a25}
+    .btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+    .btn-ghost{background:#17263d;color:#dce6f4;border-color:#30445f}
+    .btn-ghost:hover{border-color:#ff8a45;color:#fff}
+    .btn-success{background:linear-gradient(135deg,var(--green),#39e0a0);color:#0a2b1c}
+    .btn-danger{background:#381c2a;color:#ff9eae;border-color:#663047}
+    .btn-block{width:100%}
+    .preview-wrap{background:#0a1423;border:1px dashed #354965;border-radius:15px;min-height:290px;display:flex;align-items:center;justify-content:center;padding:18px;overflow:hidden}
+    .preview-wrap svg,.preview-wrap canvas,.preview-wrap img{max-width:100%;height:auto;max-height:360px}
+    .empty{text-align:center;color:#71839c;font-size:12px;line-height:2;display:flex;flex-direction:column;align-items:center;gap:8px}
+    .empty .ico{width:48px;height:48px;color:#3b506e}
+    .preview-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px}
+    .preview-actions .btn{width:100%;font-size:11px;padding:10px 8px}
+    .hint{font-size:10px;color:#8294ac;line-height:1.8;margin-top:7px}
+    .hidden{display:none!important}
+    .history-list{display:flex;flex-direction:column;gap:9px}
+    .history-item{display:flex;align-items:center;gap:11px;padding:11px;background:#0b1524;border:1px solid #223650;border-radius:12px}
+    .history-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;background:#1a2a42;color:var(--orange)}
+    .history-icon .ico{width:18px;height:18px}
+    .history-info{flex:1;min-width:0}
+    .history-info strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .history-info small{color:var(--muted);font-size:10px}
+    .history-item button{background:transparent;color:#aebed2;border:0;font-size:17px;cursor:pointer;width:28px;height:28px;display:grid;place-items:center;border-radius:6px}
+    .history-item button:hover{background:#2a3d59}
+    .history-item button .ico{width:14px;height:14px}
+    .result{background:#0b1728;border:1px solid #2b405d;padding:13px;border-radius:12px;word-break:break-word;line-height:1.9;font-size:12px}
+    .toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);background:#e9f8f2;color:#103a2b;padding:11px 17px;border-radius:12px;box-shadow:var(--shadow);font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:90vw;display:flex;align-items:center;gap:8px}
+    .toast .ico{width:16px;height:16px;flex-shrink:0}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    .footer{text-align:center;color:#657993;font-size:10px;padding:18px}
+    .section{display:none}
+    .section.active{display:block}
+    .switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #21334c}
+    .switch-row:last-child{border:0}
+    .switch-row span{font-size:12px;color:#c4d0df}
+    .switch-row input{width:auto;accent-color:var(--orange)}
+    .bio-themes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+    .bio-theme{padding:12px 8px;border-radius:10px;border:2px solid #2a3d59;background:#0a1423;cursor:pointer;font-size:11px;text-align:center;transition:.2s;color:#c4d0df}
+    .bio-theme.active{border-color:var(--orange);background:#ff6b1a18;color:var(--orange)}
+    .bio-theme:hover{border-color:#4d8dff}
+    .social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .social-check{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 6px;background:#0a1423;border:1px solid #2a3d59;border-radius:10px;cursor:pointer;transition:.2s;font-size:10px;color:#c4d0df}
+    .social-check .ico{width:20px;height:20px;color:var(--muted)}
+    .social-check input[type=checkbox]{width:auto;margin:0}
+    .social-check input[type=text]{width:100%;font-size:10px;padding:6px 8px;margin-top:3px;text-align:center}
+    .social-check.active{border-color:var(--orange);background:#ff6b1a18}
+    .social-check.active .ico{color:var(--orange)}
+    .file-input-wrap input{padding:8px;font-size:11px}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+    .modal.show{display:flex}
+    .modal-box{background:#0e1828;border:1px solid var(--border);border-radius:18px;max-width:600px;width:100%;max-height:90vh;overflow:auto;padding:22px;box-shadow:var(--shadow);position:relative}
+    .modal-box h3{margin:0 0 14px;font-size:16px}
+    .modal-close{position:absolute;top:10px;left:10px;background:#381c2a;color:#ff9eae;border:0;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;display:grid;place-items:center}
+    .modal-close .ico{width:16px;height:16px}
+    .bio-preview iframe{width:100%;height:500px;border:0;border-radius:14px;background:#fff}
+    .status-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 9px;border-radius:999px;background:#17263d;border:1px solid #2a3d59;color:#b7c5d8}
+    .status-pill.ok{background:#0f2a1f;border-color:#1d4d3a;color:#5fd6a0}
+    .status-pill.err{background:#2a0f1a;border-color:#4d1d2e;color:#ff8899}
+    .status-pill .ico{width:12px;height:12px}
+    @media(max-width:900px){
+      .layout{grid-template-columns:1fr}
+      .sidebar{position:static;display:flex;overflow:auto;gap:5px;padding:8px}
+      .side-label,.side-note{display:none}
+      .nav{white-space:nowrap;width:auto;margin:0;padding:10px}
+      .content-grid{grid-template-columns:1fr}
+      .social-grid{grid-template-columns:repeat(3,1fr)}
+      .preview-actions{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:560px){
+      .app{padding:12px}
+      .top-actions .pill{display:none}
+      .brand h1{font-size:16px}
+      .hero{padding:17px}.hero h2{font-size:17px}.hero-tag{display:none}
+      .panel{padding:15px}
+      .two{grid-template-columns:1fr}
+      .nav{font-size:11px}
+      .bio-themes{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon" id="brandIcon"></div>
+      <div><h1>QR & BARCODE STUDIO PRO</h1><p>استودیوی هوشمند ساخت و مدیریت کدها</p></div>
+    </div>
+    <div class="top-actions"><span class="pill">نسخه ۳.۰.۰</span><span class="pill">● Pro</span></div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="side-label">ابزارها</div>
+      <button class="nav active" data-tab="qr"><span class="ico" data-i="qr"></span> ساخت QR Code</button>
+      <button class="nav" data-tab="barcode"><span class="ico" data-i="barcode"></span> ساخت بارکد</button>
+      <button class="nav" data-tab="biolink"><span class="ico" data-i="bio"></span> کارت ویزیت دیجیتال</button>
+      <button class="nav" data-tab="batch"><span class="ico" data-i="package"></span> تولید دسته‌ای</button>
+      <button class="nav" data-tab="nfc"><span class="ico" data-i="nfc"></span> NFC</button>
+      <button class="nav" data-tab="history"><span class="ico" data-i="clock"></span> تاریخچه</button>
+      <button class="nav" data-tab="settings"><span class="ico" data-i="cog"></span> تنظیمات</button>
+      <div class="side-note">همه قابلیت‌ها کاملاً روی دستگاه شما اجرا می‌شوند.</div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <div><h2 id="heroTitle">ساخت QR Code اختصاصی</h2><p id="heroDesc">اطلاعات را وارد کنید و خروجی بگیرید.</p></div>
+        <div class="hero-tag" id="heroTag"><span data-i="spark" class="ico"></span> سریع • امن • آفلاین</div>
+      </section>
+
+      <!-- QR -->
+      <section class="section active" id="section-qr">
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head"><h3><span class="ico" data-i="qr"></span> اطلاعات QR Code</h3><span class="sub">مرحله ۱ از ۲</span></div>
+            <div class="field"><label>عنوان QR Code</label><input id="qrTitle" maxlength="80" placeholder="مثلاً لینک وب‌سایت"></div>
+            <div class="field"><label>نوع اطلاعات</label>
+              <select id="qrType">
+                <option value="text">متن یا لینک</option><option value="wifi">اتصال به Wi-Fi</option>
+                <option value="phone">شماره تلفن</option><option value="sms">پیامک</option>
+                <option value="email">ایمیل</option><option value="vcard">کارت مخاطب</option>
+                <option value="location">موقعیت مکانی</option>
+              </select>
+            </div>
+            <div id="qrFields"><div class="field"><label>متن یا آدرس</label><textarea id="qrText" placeholder="https://example.com"></textarea></div></div>
+            <div class="panel-head" style="margin-top:22px"><h3><span class="ico" data-i="palette"></span> شخصی‌سازی ظاهر</h3><span class="sub">مرحله ۲ از ۲</span></div>
+            <div class="two">
+              <div class="field"><label><span class="ico" data-i="droplet"></span> رنگ کد</label><input type="color" id="qrDark" value="#0B1736"></div>
+              <div class="field"><label><span class="ico" data-i="square"></span> رنگ پس‌زمینه</label><input type="color" id="qrLight" value="#FFFFFF"></div>
+            </div>
+            <div class="two">
+              <div class="field"><label><span class="ico" data-i="maximize"></span> اندازه: <b id="qrSizeLabel">640 px</b></label><input type="range" id="qrSize" min="256" max="1600" step="64" value="640"></div>
+              <div class="field"><label><span class="ico" data-i="shield"></span> تصحیح خطا</label><select id="qrLevel"><option value="M">متوسط (M)</option><option value="L">پایین (L)</option><option value="Q" selected>بالا (Q)</option><option value="H">بسیار بالا (H)</option></select></div>
+            </div>
+            <div class="field">
+              <label><span class="ico" data-i="image"></span> لوگو در مرکز QR (اختیاری)</label>
+              <div class="file-input-wrap"><input type="file" id="qrLogo" accept="image/*"></div>
+              <div class="hint">لوگو با پس‌زمینه گرد در مرکز قرار می‌گیرد؛ تصحیح خطا را Q/H نگه دارید.</div>
+            </div>
+            <button class="btn btn-primary btn-block" id="makeQr"><span class="ico" data-i="spark"></span> تولید QR Code</button>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3><span class="ico" data-i="eye"></span> پیش‌نمایش</h3><span class="status-pill" id="qrStatus"><span class="ico" data-i="circle"></span> آماده</span></div>
+            <div class="preview-wrap" id="qrPreview"><div class="empty"><span class="ico" data-i="qr"></span>QR Code شما اینجا نمایش داده می‌شود</div></div>
+            <div class="preview-actions">
+              <button class="btn btn-primary" id="qrPng" disabled><span class="ico" data-i="download"></span> PNG</button>
+              <button class="btn btn-ghost" id="qrSvg" disabled><span class="ico" data-i="code"></span> SVG</button>
+              <button class="btn btn-ghost" id="qrPdf" disabled><span class="ico" data-i="file"></span> PDF</button>
+              <button class="btn btn-ghost" id="qrShare" disabled><span class="ico" data-i="share"></span> Share</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BARCODE -->
+      <section class="section" id="section-barcode">
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head"><h3><span class="ico" data-i="barcode"></span> تنظیمات بارکد</h3></div>
+            <div class="field"><label>عنوان بارکد</label><input id="barTitle" maxlength="80" placeholder="مثلاً محصول ۱۲۳"></div>
+            <div class="field"><label>نوع بارکد</label>
+              <select id="barFormat"><option value="CODE128">Code 128</option><option value="CODE39">Code 39</option><option value="EAN13">EAN-13</option><option value="EAN8">EAN-8</option><option value="UPC">UPC-A</option><option value="ITF">ITF</option><option value="MSI">MSI</option><option value="pharmacode">Pharmacode</option></select>
+            </div>
+            <div class="field"><label>مقدار</label><input id="barText" placeholder="مثلاً 123456789012"></div>
+            <div class="two">
+              <div class="field"><label><span class="ico" data-i="droplet"></span> رنگ خطوط</label><input type="color" id="barLine" value="#0B1736"></div>
+              <div class="field"><label><span class="ico" data-i="square"></span> پس‌زمینه</label><input type="color" id="barBg" value="#FFFFFF"></div>
+            </div>
+            <div class="two">
+              <div class="field"><label><span class="ico" data-i="minus"></span> ضخامت: <b id="barWidthLabel">2</b></label><input type="range" id="barWidth" min="1" max="4" step=".2" value="2"></div>
+              <div class="field"><label><span class="ico" data-i="move"></span> ارتفاع: <b id="barHeightLabel">100</b></label><input type="range" id="barHeight" min="40" max="180" value="100"></div>
+            </div>
+            <div class="switch-row"><span>نمایش متن زیر بارکد</span><input type="checkbox" id="barDisplay" checked></div>
+            <button class="btn btn-primary btn-block" id="makeBarcode" style="margin-top:17px"><span class="ico" data-i="spark"></span> تولید بارکد</button>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3><span class="ico" data-i="eye"></span> پیش‌نمایش</h3><span class="status-pill" id="barStatus"><span class="ico" data-i="circle"></span> آماده</span></div>
+            <div class="preview-wrap" id="barPreview"><div class="empty"><span class="ico" data-i="barcode"></span>بارکد شما اینجا</div></div>
+            <div class="preview-actions">
+              <button class="btn btn-primary" id="barPng" disabled><span class="ico" data-i="download"></span> PNG</button>
+              <button class="btn btn-ghost" id="barSvg" disabled><span class="ico" data-i="code"></span> SVG</button>
+              <button class="btn btn-ghost" id="barPdf" disabled><span class="ico" data-i="file"></span> PDF</button>
+              <button class="btn btn-ghost" id="barShare" disabled><span class="ico" data-i="share"></span> Share</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BIOLINK -->
+      <section class="section" id="section-biolink">
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head"><h3><span class="ico" data-i="bio"></span> کارت ویزیت دیجیتال</h3><span class="sub">صفحه لینک‌تری حرفه‌ای</span></div>
+            <div class="field"><label>قالب صفحه</label>
+              <div class="bio-themes" id="bioThemes">
+                <div class="bio-theme active" data-theme="minimal">Minimal<br><small>سفید تمیز</small></div>
+                <div class="bio-theme" data-theme="dark">Dark<br><small>تیره مدرن</small></div>
+                <div class="bio-theme" data-theme="gradient">Gradient<br><small>گرادیان</small></div>
+                <div class="bio-theme" data-theme="glass">Glass<br><small>شیشه‌ای</small></div>
+                <div class="bio-theme" data-theme="retro">Retro<br><small>ترمینال</small></div>
+                <div class="bio-theme" data-theme="neon">Neon<br><small>نئون</small></div>
+              </div>
+            </div>
+            <div class="two">
+              <div class="field"><label><span class="ico" data-i="user"></span> نام کامل</label><input id="bioName" placeholder="مثلاً علی رضایی"></div>
+              <div class="field"><label><span class="ico" data-i="briefcase"></span> برند / عنوان</label><input id="bioBrand" placeholder="مثلاً طراح گرافیک"></div>
+            </div>
+            <div class="field"><label><span class="ico" data-i="type"></span> بیوگرافی کوتاه</label><textarea id="bioBio" style="min-height:70px" placeholder="چند خط درباره خودتان..."></textarea></div>
+            <div class="two">
+              <div class="field"><label><span class="ico" data-i="user-circle"></span> لوگو (آواتار)</label><input type="file" id="bioAvatar" accept="image/*"></div>
+              <div class="field"><label><span class="ico" data-i="image"></span> پس‌زمینه</label><input type="file" id="bioBg" accept="image/*"></div>
+            </div>
+            <div class="panel-head" style="margin-top:15px"><h3><span class="ico" data-i="contact"></span> اطلاعات تماس</h3></div>
+            <div class="two">
+              <div class="field"><label><span class="ico" data-i="phone"></span> تلفن</label><input id="bioPhone" placeholder="+989121234567"></div>
+              <div class="field"><label><span class="ico" data-i="mail"></span> ایمیل</label><input id="bioEmail" placeholder="info@site.com"></div>
+            </div>
+            <div class="field"><label><span class="ico" data-i="pin"></span> آدرس / شهر</label><input id="bioAddr" placeholder="تهران، ایران"></div>
+            <div class="field"><label><span class="ico" data-i="globe"></span> وب‌سایت اصلی</label><input id="bioSite" placeholder="https://yoursite.com"></div>
+            <div class="panel-head" style="margin-top:15px"><h3><span class="ico" data-i="share"></span> شبکه‌های اجتماعی</h3><span class="sub">تیک‌خورده‌ها نمایش داده می‌شوند</span></div>
+            <div class="social-grid" id="socialGrid">
+              <label class="social-check"><span class="ico" data-i="instagram"></span><span>اینستاگرام</span><input type="checkbox" data-net="instagram" checked><input placeholder="@user" type="text"></label>
+              <label class="social-check"><span class="ico" data-i="telegram"></span><span>تلگرام</span><input type="checkbox" data-net="telegram"><input placeholder="@user" type="text"></label>
+              <label class="social-check"><span class="ico" data-i="whatsapp"></span><span>واتس‌اپ</span><input type="checkbox" data-net="whatsapp"><input placeholder="+98..." type="text"></label>
+              <label class="social-check"><span class="ico" data-i="linkedin"></span><span>لینکدین</span><input type="checkbox" data-net="linkedin"><input placeholder="in/user" type="text"></label>
+              <label class="social-check"><span class="ico" data-i="twitter"></span><span>ایکس</span><input type="checkbox" data-net="twitter"><input placeholder="@user" type="text"></label>
+              <label class="social-check"><span class="ico" data-i="youtube"></span><span>یوتیوب</span><input type="checkbox" data-net="youtube"><input placeholder="@channel" type="text"></label>
+              <label class="social-check"><span class="ico" data-i="github"></span><span>گیت‌هاب</span><input type="checkbox" data-net="github"><input placeholder="user" type="text"></label>
+              <label class="social-check"><span class="ico" data-i="tiktok"></span><span>تیک‌تاک</span><input type="checkbox" data-net="tiktok"><input placeholder="@user" type="text"></label>
+            </div>
+            <div class="panel-head" style="margin-top:15px"><h3><span class="ico" data-i="link"></span> لینک‌های دلخواه</h3></div>
+            <div id="bioLinks">
+              <div class="two bio-link-row"><input placeholder="عنوان دکمه"><input placeholder="https://..."></div>
+            </div>
+            <button class="btn btn-ghost" id="addBioLink" style="margin-top:8px"><span class="ico" data-i="plus"></span> افزودن لینک</button>
+            <div class="two" style="margin-top:17px">
+              <button class="btn btn-primary" id="bioPreviewBtn"><span class="ico" data-i="eye"></span> پیش‌نمایش</button>
+              <button class="btn btn-success" id="bioDownload"><span class="ico" data-i="download"></span> دانلود HTML</button>
+            </div>
+            <button class="btn btn-ghost btn-block" id="bioQrBtn" style="margin-top:9px"><span class="ico" data-i="qr"></span> تولید QR برای این صفحه</button>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3><span class="ico" data-i="book"></span> راهنما</h3></div>
+            <div class="result" style="line-height:2">
+              <b>کارت ویزیت دیجیتال</b><br>یک صفحه HTML مستقل می‌سازد؛ آن را در Drive / GitHub Pages / Netlify آپلود کنید و QR آن URL را بسازید.<br><br>
+              <b>قالب‌ها</b><br>۶ قالب با پیش‌نمایش زنده در مودال.<br><br>
+              <b>نکته</b><br>HTML خروجی self-contained است (تصاویر base64 داخل فایل) و آفلاین کار می‌کند.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BATCH -->
+      <section class="section" id="section-batch">
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head"><h3><span class="ico" data-i="package"></span> تولید دسته‌ای</h3><span class="sub">ZIP از چند کد</span></div>
+            <div class="two">
+              <div class="field"><label>نوع</label><select id="batchType"><option value="qr">QR Code</option><option value="barcode">بارکد (CODE128)</option></select></div>
+              <div class="field"><label>سایز (QR)</label><select id="batchSize"><option>256</option><option selected>512</option><option>1024</option><option>1600</option></select></div>
+            </div>
+            <div class="field"><label>روش ورودی</label><select id="batchInput"><option value="text">لیست متنی (هر خط یک مورد)</option><option value="csv">آپلود CSV</option></select></div>
+            <div class="field" id="batchTextWrap"><label>لیست مقادیر</label><textarea id="batchText" style="min-height:180px" placeholder="https://site.com/1&#10;https://site.com/2&#10;PC-1001"></textarea></div>
+            <div class="field hidden" id="batchFileWrap"><label>فایل CSV (ستون۱=مقدار، ستون۲=نام فایل اختیاری)</label><input type="file" id="batchFile" accept=".csv,text/csv"></div>
+            <button class="btn btn-success btn-block" id="batchRun" style="margin-top:10px"><span class="ico" data-i="archive"></span> تولید و دانلود ZIP</button>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3><span class="ico" data-i="activity"></span> وضعیت</h3><span class="status-pill" id="batchStatus"><span class="ico" data-i="circle"></span> آماده</span></div>
+            <div class="result" id="batchLog">هنوز عملیاتی انجام نشده است.</div>
+            <progress id="batchProgress" value="0" max="100" style="width:100%;margin-top:12px;display:none"></progress>
+          </div>
+        </div>
+      </section>
+
+      <!-- NFC -->
+      <section class="section" id="section-nfc">
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-head"><h3><span class="ico" data-i="nfc-read"></span> خواندن از تگ NFC</h3><span class="status-pill" id="nfcSupport"><span class="ico" data-i="circle"></span> در حال بررسی</span></div>
+            <p class="hint">فقط Chrome/Edge روی اندروید ۸۹+ پشتیبانی می‌شود (iOS خیر). تگ را پشت گوشی نگه دارید تا ویبره بزند.</p>
+            <button class="btn btn-primary btn-block" id="nfcRead"><span class="ico" data-i="nfc-read"></span> شروع خواندن تگ</button>
+            <button class="btn btn-ghost btn-block" id="nfcCancel" disabled style="margin-top:9px"><span class="ico" data-i="stop"></span> لغو عملیات</button>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3><span class="ico" data-i="nfc-write"></span> نوشتن روی تگ NFC</h3></div>
+            <div class="field"><label>نوع داده</label><select id="nfcType"><option value="text">متن</option><option value="url">لینک (URL)</option></select></div>
+            <div class="field"><label>محتوا</label><textarea id="nfcText" style="min-height:80px" placeholder="متن دلخواه یا https://..."></textarea></div>
+            <button class="btn btn-success btn-block" id="nfcWrite"><span class="ico" data-i="upload"></span> نوشتن روی تگ</button>
+            <p class="hint">تگ‌های قابل‌نوشتن: NTAG213/215/216 و مشابه. تگ قفل‌شده (locked) قابل نوشتن نیست.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3><span class="ico" data-i="message"></span> نتیجه خواندن</h3><span class="status-pill" id="nfcStatus"><span class="ico" data-i="circle"></span> منتظر</span></div>
+          <div class="result" id="nfcResult">هنوز تگی خوانده نشده است.</div>
+          <div class="preview-actions" style="margin-top:12px">
+            <button class="btn btn-ghost" id="nfcCopy"><span class="ico" data-i="copy"></span> کپی</button>
+            <button class="btn btn-ghost" id="nfcOpen"><span class="ico" data-i="external"></span> بازکردن</button>
+            <button class="btn btn-ghost" id="nfcToQr"><span class="ico" data-i="qr"></span> ساخت QR</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- HISTORY -->
+      <section class="section" id="section-history">
+        <div class="panel">
+          <div class="panel-head"><div><h3><span class="ico" data-i="clock"></span> تاریخچه</h3><div class="sub">داده‌ها روی دستگاه</div></div><button class="btn btn-danger" id="clearHistory"><span class="ico" data-i="trash"></span> پاک‌کردن</button></div>
+          <div class="history-list" id="historyList"><div class="empty"><span class="ico" data-i="clock"></span>هنوز موردی ثبت نشده است.</div></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="section" id="section-settings">
+        <div class="panel">
+          <div class="panel-head"><h3><span class="ico" data-i="cog"></span> تنظیمات</h3></div>
+          <div class="switch-row"><span>ذخیره خودکار تاریخچه</span><input type="checkbox" id="historyEnabled" checked></div>
+          <div class="switch-row"><span>تأیید قبل از پاک‌کردن</span><input type="checkbox" id="confirmDelete" checked></div>
+          <div class="field" style="margin-top:18px"><button class="btn btn-ghost" id="exportHistory"><span class="ico" data-i="download"></span> خروجی JSON تاریخچه</button></div>
+          <div class="field"><button class="btn btn-danger" id="clearAll"><span class="ico" data-i="trash"></span> حذف همه داده‌های محلی</button></div>
+        </div>
+      </section>
+
+      <div class="footer">QR & Barcode Studio Pro v3.0.0</div>
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal" id="bioModal">
+  <div class="modal-box">
+    <button class="modal-close" id="bioModalClose"><span class="ico" data-i="x"></span></button>
+    <h3>پیش‌نمایش کارت ویزیت</h3>
+    <div class="bio-preview"><iframe id="bioFrame" title="Bio preview"></iframe></div>
+  </div>
+</div>
+
+<script><?!= LIB_QR ?></script>
+<script><?!= LIB_BARCODE ?></script>
+<script><?!= LIB_PDF ?></script>
+<script><?!= LIB_ZIP ?></script>
+
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+
+  /* ============================================================
+   * ICON SYSTEM - Lucide-style line icons
+   * ============================================================ */
+  const ICONS = {
+    qr:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/><rect x="5" y="5" width="3" height="3" fill="currentColor"/><rect x="16" y="5" width="3" height="3" fill="currentColor"/><rect x="5" y="16" width="3" height="3" fill="currentColor"/>',
+    barcode:'<path d="M3 5v14M7 5v14M11 5v14M15 5v14M19 5v14M21 5v14" stroke-width="2"/>',
+    bio:'<rect x="2" y="4" width="20" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 8h3M15 12h3M7 16h10"/>',
+    package:'<path d="m7.5 4.27 9 5.15"/><path d="M21 8 13.5 12.5 6 8l7.5-4.5L21 8z"/><path d="M3.5 8v8L12 21.5 20.5 16V8"/><path d="M12 12.5v9M3.5 8l8.5 4.5"/>',
+    nfc:'<path d="M5 12a7 7 0 0 1 14 0"/><path d="M8.5 12a3.5 3.5 0 0 1 7 0"/><circle cx="12" cy="12" r="1"/>',
+    'nfc-read':'<path d="M5 12a7 7 0 0 1 14 0"/><path d="M8.5 12a3.5 3.5 0 0 1 7 0"/><circle cx="12" cy="12" r="1" fill="currentColor"/>',
+    'nfc-write':'<path d="M5 12a7 7 0 0 1 14 0"/><path d="M8.5 12a3.5 3.5 0 0 1 7 0"/><path d="M12 14v7M9 18l3 3 3-3"/>',
+    clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+    cog:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+    spark:'<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>',
+    download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>',
+    upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/>',
+    share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/>',
+    eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+    trash:'<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/>',
+    plus:'<path d="M12 5v14M5 12h14"/>',
+    x:'<path d="M18 6 6 18M6 6l12 12"/>',
+    check:'<path d="M20 6 9 17l-5-5"/>',
+    copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+    link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+    external:'<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+    phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+    mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/>',
+    pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+    globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+    image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.82 0L6 21"/>',
+    stop:'<rect x="6" y="6" width="12" height="12" rx="1"/>',
+    file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
+    code:'<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+    droplet:'<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>',
+    square:'<rect x="3" y="3" width="18" height="18" rx="2"/>',
+    maximize:'<path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>',
+    shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+    minus:'<path d="M5 12h14"/>',
+    move:'<path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3"/><path d="M2 12h20M12 2v20"/>',
+    user:'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+    'user-circle':'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.66a8 8 0 0 1 10 0"/>',
+    briefcase:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+    type:'<polyline points="4 7 4 4 20 4 20 7"/><path d="M9 20h6M12 4v16"/>',
+    contact:'<path d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/><path d="M3 21v-2a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v2"/>',
+    book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+    archive:'<rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/>',
+    activity:'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+    message:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+    circle:'<circle cx="12" cy="12" r="10"/>',
+    instagram:'<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/>',
+    telegram:'<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+    whatsapp:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+    linkedin:'<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
+    twitter:'<path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2-3-1-5-4-5-7.5 1 .5 2 .8 3 .8A9 9 0 0 1 2 4s4-2 9 3c1.6-.5 3-1.2 4-2 0 0 1 2.5-2 4 .5 0 1 0 1.5-.2-.3 1-1 2-2 2.8.5 0 1 0 1.5-.1-.6.8-1.4 1.5-2.5 2"/>',
+    youtube:'<path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z" fill="currentColor"/>',
+    github:'<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.4.4-.7 1-.9 1.5-.2.6-.3 1.2-.3 1.8v4.2"/><path d="M9 18c-4.51 2-5-2-7-2"/>',
+    tiktok:'<path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>'
+  };
+
+  function svg(name, size){
+    const d = ICONS[name];
+    if(!d) return '';
+    const s = size || 24;
+    return '<svg class="ico" viewBox="0 0 24 24" width="'+s+'" height="'+s+'" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>';
+  }
+  function svgInline(name, size, color){
+    const d = ICONS[name];
+    if(!d) return '';
+    const s = size || 24;
+    const c = color || 'currentColor';
+    return '<svg viewBox="0 0 24 24" width="'+s+'" height="'+s+'" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="'+c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-0.15em">'+d+'</svg>';
+  }
+
+  // Inject icons into all [data-i] elements
+  function injectIcons(root){
+    (root || document).querySelectorAll('[data-i]').forEach(el => {
+      const name = el.getAttribute('data-i');
+      const svg = ICONS[name];
+      if(!svg) return;
+      const size = el.getAttribute('data-size') || 24;
+      el.innerHTML = '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+svg+'</svg>';
+    });
+  }
+  injectIcons(document);
+
+  // Brand icon
+  $('brandIcon').innerHTML = svg('qr', 26);
+
+  const state = {
+    qrSvg:'', qrPng:'', qrTitle:'qr-code',
+    barSvg:'', barPng:'', barTitle:'barcode',
+    history:[], nfcResult:'',
+    bioData:{theme:'minimal',avatarData:null,bgData:null}
+  };
+  const HISTORY_KEY='qrbsp_history_v3', PREF_KEY='qrbsp_prefs_v3';
+
+  const titles = {
+    qr:['ساخت QR Code اختصاصی','اطلاعات را وارد کنید، ظاهر کد را تنظیم کنید و خروجی بگیرید.','سریع • امن • آفلاین'],
+    barcode:['ساخت بارکد استاندارد','استاندارد موردنظر را انتخاب کنید و کد چاپی بسازید.','Code128 • EAN • UPC'],
+    biolink:['کارت ویزیت دیجیتال','صفحه لینک‌تری شخصی با ۶ قالب حرفه‌ای و شبکه‌های اجتماعی.','QR اختصاصی + دانلود HTML'],
+    batch:['تولید دسته‌ای','ده‌ها یا صدها کد را یکجا تولید و به صورت ZIP دانلود کنید.','QR یا Barcode'],
+    nfc:['ابزار NFC','خواندن و نوشتن تگ‌های NFC (NDEF) — فقط Chrome اندروید.','Text • URL'],
+    history:['تاریخچه فعالیت‌ها','کدهای ساخته‌شده و عملیات NFC شما.','فقط روی دستگاه شما'],
+    settings:['تنظیمات برنامه','مدیریت داده‌ها و حریم خصوصی.','']
+  };
+
+  function toast(msg,type){
+    const el=$('toast');
+    const iconMap = {err:'x', warn:'alert-tri', ok:'check'};
+    const iconName = iconMap[type] || 'check';
+    el.innerHTML = svgInline(iconName,16) + '<span>'+msg+'</span>';
+    el.style.background = type==='err'?'#ff647c':type==='warn'?'#ffb84d':'#e9f8f2';
+    el.style.color = type==='warn'?'#3a2a10':'#103a2b';
+    el.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t=setTimeout(()=>el.classList.remove('show'),2800);
+  }
+  function safeFileBase(t,fb){ const c=String(t||'').trim().replace(/[\\/:*?"<>|\u0000-\u001f]/g,'-').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^[-.]+|[-.]+$/g,'').slice(0,80); return c||fb; }
+  function downloadBlob(blob,name){ const a=document.createElement('a'); const u=URL.createObjectURL(blob); a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),1500); }
+  function dataUrlBlob(d){ const [m,b]=d.split(','); const mime=(m.match(/:(.*?);/)||[])[1]||'application/octet-stream'; const bin=atob(b); const arr=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i); return new Blob([arr],{type:mime}); }
+  function svgToPng(svg,width,height){
+    return new Promise((resolve,reject)=>{
+      const end=svg.indexOf('>'); const root=svg.slice(0,end);
+      if(!/\swidth\s*=/.test(root)) svg='<svg width="'+Math.round(width)+'" height="'+Math.round(height)+'"'+root.slice(4)+svg.slice(end);
+      const blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});
+      const url=URL.createObjectURL(blob); const img=new Image();
+      img.onload=()=>{ const c=document.createElement('canvas'); c.width=Math.max(1,Math.round(width)); c.height=Math.max(1,Math.round(height)); const ctx=c.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height); ctx.drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url); resolve(c.toDataURL('image/png')); };
+      img.onerror=e=>{ URL.revokeObjectURL(url); reject(e); };
+      img.src=url;
+    });
+  }
+  function setStatus(id, text, type){
+    const el = $(id);
+    el.className = 'status-pill' + (type==='ok'?' ok':type==='err'?' err':'');
+    const icon = type==='ok'?'check':type==='err'?'x':'circle';
+    el.innerHTML = svgInline(icon,12) + ' ' + text;
+  }
+
+  /* History */
+  function saveHistory(item){ const p=JSON.parse(localStorage.getItem(PREF_KEY)||'{}'); if(p.historyEnabled===false) return; state.history.unshift({...item,id:Date.now()+'_'+Math.random().toString(16).slice(2),time:new Date().toISOString()}); state.history=state.history.slice(0,100); localStorage.setItem(HISTORY_KEY,JSON.stringify(state.history)); renderHistory(); }
+  function loadHistory(){ try{ state.history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]'); }catch(e){ state.history=[]; } renderHistory(); }
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function renderHistory(){
+    const box=$('historyList');
+    if(!state.history.length){ box.innerHTML='<div class="empty">'+svg('clock',48)+'هنوز موردی ثبت نشده است.</div>'; return; }
+    const iconMap = {QR:'qr', Barcode:'barcode', BioLink:'bio', NFC:'nfc', Batch:'package'};
+    box.innerHTML=state.history.map(x=>{
+      const iconName = iconMap[x.kind] || 'file';
+      return `<div class="history-item">
+        <div class="history-icon">${svg(iconName,18)}</div>
+        <div class="history-info"><strong>${escapeHtml(x.title||x.value||'بدون عنوان')}</strong><small>${escapeHtml(x.kind)} · ${new Date(x.time).toLocaleString('fa-IR')}</small></div>
+        <button data-del="${escapeHtml(x.id)}" title="حذف">${svg('x',14)}</button>
+      </div>`;
+    }).join('');
+  }
+
+  /* Tabs */
+  function activate(tab){
+    document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+    document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id==='section-'+tab));
+    $('heroTitle').textContent=titles[tab][0]; $('heroDesc').textContent=titles[tab][1];
+    $('heroTag').innerHTML = svgInline('spark',14) + ' ' + titles[tab][2];
+  }
+  document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.tab)));
+  function setEnabled(ids,on){ ids.forEach(id=>$(id).disabled=!on); }
+
+  /* ===== QR ===== */
+  const qrType=$('qrType');
+  function qrFields(){
+    const t=qrType.value; let h='';
+    const iconLabel = (ic,txt) => svgInline(ic,14) + ' ' + txt;
+    if(t==='text') h='<div class="field"><label>'+iconLabel('type','متن یا آدرس')+'</label><textarea id="qrText" placeholder="https://example.com"></textarea></div>';
+    if(t==='wifi') h='<div class="field"><label>'+iconLabel('wifi','نام شبکه')+'</label><input id="wifiSsid"></div><div class="two"><div class="field"><label>'+iconLabel('shield','رمز')+'</label><input id="wifiPass" type="password"></div><div class="field"><label>'+iconLabel('cog','امنیت')+'</label><select id="wifiAuth"><option>WPA</option><option>WEP</option><option value="nopass">بدون رمز</option></select></div></div><div class="switch-row"><span>شبکه مخفی</span><input id="wifiHidden" type="checkbox"></div>';
+    if(t==='phone') h='<div class="field"><label>'+iconLabel('phone','شماره')+'</label><input id="phoneVal" placeholder="+989123456789"></div>';
+    if(t==='sms') h='<div class="field"><label>'+iconLabel('phone','شماره')+'</label><input id="smsPhone"></div><div class="field"><label>'+iconLabel('message','متن')+'</label><textarea id="smsBody"></textarea></div>';
+    if(t==='email') h='<div class="field"><label>'+iconLabel('mail','ایمیل')+'</label><input id="emailTo"></div><div class="field"><label>'+iconLabel('type','موضوع')+'</label><input id="emailSubject"></div><div class="field"><label>'+iconLabel('type','متن')+'</label><textarea id="emailBody"></textarea></div>';
+    if(t==='vcard') h='<div class="two"><div class="field"><label>'+iconLabel('user','نام')+'</label><input id="vcName"></div><div class="field"><label>'+iconLabel('phone','تلفن')+'</label><input id="vcPhone"></div></div><div class="two"><div class="field"><label>'+iconLabel('mail','ایمیل')+'</label><input id="vcEmail"></div><div class="field"><label>'+iconLabel('briefcase','سازمان')+'</label><input id="vcOrg"></div></div><div class="field"><label>'+iconLabel('globe','وب‌سایت')+'</label><input id="vcUrl"></div>';
+    if(t==='location') h='<div class="two"><div class="field"><label>'+iconLabel('pin','Latitude')+'</label><input id="locLat" placeholder="35.6892"></div><div class="field"><label>'+iconLabel('pin','Longitude')+'</label><input id="locLng" placeholder="51.3890"></div></div>';
+    $('qrFields').innerHTML=h;
+  }
+  qrType.addEventListener('change',qrFields);
+
+  function getQrPayload(){
+    const t=qrType.value, val=id=>($(id)?.value||'').trim();
+    if(t==='text') return val('qrText');
+    if(t==='wifi'){ const s=val('wifiSsid'),p=val('wifiPass'),a=$('wifiAuth').value; if(!s) throw Error('نام شبکه را وارد کنید'); const esc=v=>v.replace(/[\\;,:"]/g,'\\$&'); return 'WIFI:T:'+a+';S:'+esc(s)+';'+(a==='nopass'?'':'P:'+esc(p)+';')+'H:'+($('wifiHidden').checked?'true':'false')+';;'; }
+    if(t==='phone'){ const p=val('phoneVal'); if(!p) throw Error('شماره را وارد کنید'); return 'tel:'+p; }
+    if(t==='sms'){ const p=val('smsPhone'); if(!p) throw Error('شماره را وارد کنید'); return 'SMSTO:'+p+':'+val('smsBody'); }
+    if(t==='email'){ const e=val('emailTo'); if(!e) throw Error('ایمیل را وارد کنید'); return 'mailto:'+e+'?subject='+encodeURIComponent(val('emailSubject'))+'&body='+encodeURIComponent(val('emailBody')); }
+    if(t==='vcard'){ const n=val('vcName'); if(!n) throw Error('نام را وارد کنید'); return ['BEGIN:VCARD','VERSION:3.0','FN:'+n,'TEL:'+val('vcPhone'),'EMAIL:'+val('vcEmail'),'ORG:'+val('vcOrg'),'URL:'+val('vcUrl'),'END:VCARD'].join('\r\n'); }
+    if(t==='location'){ const la=val('locLat'),ln=val('locLng'); if(!la||!ln||!Number.isFinite(+la)||!Number.isFinite(+ln)) throw Error('مختصات معتبر'); return 'geo:'+la+','+ln; }
+    return '';
+  }
+  $('qrSize').addEventListener('input',()=>{ $('qrSizeLabel').textContent=$('qrSize').value+' px'; });
+
+  let qrLogoImg=null;
+  $('qrLogo').addEventListener('change',e=>{
+    const f=e.target.files?.[0]; if(!f){ qrLogoImg=null; return; }
+    const r=new FileReader();
+    r.onload=()=>{ const i=new Image(); i.onload=()=>{ qrLogoImg=i; toast('لوگو انتخاب شد','ok'); }; i.src=r.result; };
+    r.readAsDataURL(f);
+  });
+
+  $('makeQr').addEventListener('click',async()=>{
+    try{
+      if(typeof window.qrcode!=='function') throw new Error('کتابخانه QR بارگذاری نشده');
+      const title=($('qrTitle').value||'').trim(); if(!title) throw new Error('عنوان را وارد کنید');
+      const payload=getQrPayload(); if(!payload) throw new Error('اطلاعات را وارد کنید');
+      const size=+$('qrSize').value;
+      if(qrcode.stringToBytesFuncs&&qrcode.stringToBytesFuncs['UTF-8']) qrcode.stringToBytes=qrcode.stringToBytesFuncs['UTF-8'];
+      const qr=qrcode(0,$('qrLevel').value); qr.addData(payload); qr.make();
+      const svg=qr.createSvgTag({cellSize:8,margin:4,scalable:true});
+      const colored=svg.replace(/#000000/gi,$('qrDark').value).replace(/#ffffff|#FFFFFF/gi,$('qrLight').value);
+      state.qrSvg=colored;
+      const basePng=await svgToPng(colored,size,size);
+      let finalPng=basePng;
+      if(qrLogoImg){
+        finalPng=await new Promise((res,rej)=>{
+          const c=document.createElement('canvas'); c.width=size; c.height=size;
+          const img=new Image();
+          img.onload=()=>{
+            const ctx=c.getContext('2d');
+            ctx.drawImage(img,0,0,size,size);
+            const ls=Math.round(size*0.22), pad=ls*0.18;
+            ctx.fillStyle=$('qrLight').value;
+            ctx.beginPath(); ctx.arc(size/2,size/2,ls/2+pad,0,Math.PI*2); ctx.fill();
+            ctx.save(); ctx.beginPath(); ctx.arc(size/2,size/2,ls/2,0,Math.PI*2); ctx.clip();
+            ctx.drawImage(qrLogoImg,(size-ls)/2,(size-ls)/2,ls,ls); ctx.restore();
+            res(c.toDataURL('image/png'));
+          };
+          img.onerror=rej; img.src=basePng;
+        });
+      }
+      state.qrPng=finalPng; state.qrTitle=safeFileBase(title,'qr-code');
+      $('qrPreview').innerHTML='<img src="'+finalPng+'" style="border-radius:10px;background:#fff">';
+      setStatus('qrStatus','تولید موفق','ok');
+      setEnabled(['qrPng','qrSvg','qrPdf','qrShare'],true);
+      saveHistory({kind:'QR',title:title,value:payload,format:qrType.value});
+      toast(qrLogoImg?'QR با لوگو ساخته شد':'QR Code ساخته شد','ok');
+    }catch(e){ toast(e.message||'خطا در تولید QR','err'); setStatus('qrStatus','خطا','err'); }
+  });
+  $('qrPng').onclick=()=>downloadBlob(dataUrlBlob(state.qrPng),state.qrTitle+'.png');
+  $('qrSvg').onclick=()=>downloadBlob(new Blob([state.qrSvg],{type:'image/svg+xml;charset=utf-8'}),state.qrTitle+'.svg');
+  $('qrPdf').onclick=()=>makePdf(state.qrPng,state.qrTitle+'.pdf');
+  $('qrShare').onclick=()=>shareFile(state.qrPng,state.qrTitle+'.png');
+
+  function makePdf(png,name){
+    try{
+      if(!window.jspdf){ toast('کتابخانه PDF بارگذاری نشده','warn'); return; }
+      const img=new Image();
+      img.onload=()=>{ const {jsPDF}=window.jspdf; const pdf=new jsPDF({unit:'mm',format:'a4'}); const r=Math.min(120/img.width,150/img.height,1); const w=img.width*r,h=img.height*r; pdf.addImage(png,'PNG',(210-w)/2,(297-h)/2,w,h); pdf.save(name); };
+      img.onerror=()=>toast('ساخت PDF ممکن نشد','err');
+      img.src=png;
+    }catch(e){ toast('ساخت PDF ممکن نشد','err'); }
+  }
+  async function shareFile(dataUrl,name){
+    const file=new File([dataUrlBlob(dataUrl)],name,{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{ await navigator.share({files:[file],title:'QR & Barcode Studio Pro'}); }catch(e){ if(e.name!=='AbortError') toast('اشتراک‌گذاری ناموفق','err'); }
+    } else { downloadBlob(dataUrlBlob(dataUrl),name); toast('Share پشتیبانی نمی‌شود؛ فایل دانلود شد','warn'); }
+  }
+
+  /* ===== BARCODE ===== */
+  function makeBarcodeSvg(){
+    const v=$('barText').value.trim(), f=$('barFormat').value;
+    if(!v) throw Error('مقدار را وارد کنید');
+    if(typeof JsBarcode==='undefined') throw Error('کتابخانه بارکد بارگذاری نشده');
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    JsBarcode(svg,v,{format:f,lineColor:$('barLine').value,background:$('barBg').value,width:+$('barWidth').value,height:+$('barHeight').value,displayValue:$('barDisplay').checked,margin:12,font:'Vazirmatn',fontSize:16,textMargin:7});
+    return new XMLSerializer().serializeToString(svg);
+  }
+  $('barWidth').oninput=()=>{ $('barWidthLabel').textContent=$('barWidth').value; };
+  $('barHeight').oninput=()=>{ $('barHeightLabel').textContent=$('barHeight').value; };
+  $('makeBarcode').onclick=async()=>{
+    try{
+      const title=($('barTitle').value||'').trim(); if(!title) throw new Error('عنوان را وارد کنید');
+      const svg=makeBarcodeSvg(); state.barSvg=svg;
+      const vb=(svg.match(/viewBox="([^"]+)"/)||[])[1]; const d=vb?vb.split(/\s+/):null;
+      const w=Math.max(500,d?+d[2]:500), h=Math.max(180,d?+d[3]:150);
+      state.barPng=await svgToPng(svg,w,h);
+      state.barTitle=safeFileBase(title,'barcode');
+      $('barPreview').innerHTML=svg; setStatus('barStatus','تولید موفق','ok');
+      setEnabled(['barPng','barSvg','barPdf','barShare'],true);
+      saveHistory({kind:'Barcode',title:title,value:$('barText').value.trim(),format:$('barFormat').value});
+      toast('بارکد ساخته شد','ok');
+    }catch(e){ toast(e.message||'مقدار نامعتبر','err'); setStatus('barStatus','خطا','err'); }
+  };
+  $('barPng').onclick=()=>downloadBlob(dataUrlBlob(state.barPng),state.barTitle+'.png');
+  $('barSvg').onclick=()=>downloadBlob(new Blob([state.barSvg],{type:'image/svg+xml;charset=utf-8'}),state.barTitle+'.svg');
+  $('barPdf').onclick=()=>makePdf(state.barPng,state.barTitle+'.pdf');
+  $('barShare').onclick=()=>shareFile(state.barPng,state.barTitle+'.png');
+
+  /* ===== BIOLINK ===== */
+  const SOCIAL_URLS={
+    instagram:{url:'https://instagram.com/{v}',label:'اینستاگرام'},
+    telegram:{url:'https://t.me/{v}',label:'تلگرام'},
+    whatsapp:{url:'https://wa.me/{v}',label:'واتس‌اپ'},
+    linkedin:{url:'https://linkedin.com/in/{v}',label:'لینکدین'},
+    twitter:{url:'https://x.com/{v}',label:'X'},
+    youtube:{url:'https://youtube.com/@{v}',label:'یوتیوب'},
+    github:{url:'https://github.com/{v}',label:'گیت‌هاب'},
+    tiktok:{url:'https://tiktok.com/@{v}',label:'تیک‌تاک'}
+  };
+  function readFileAsDataURL(f){ return new Promise((res,rej)=>{ if(!f) return res(null); const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(f); }); }
+  $('bioAvatar').onchange=async e=>{ state.bioData.avatarData=await readFileAsDataURL(e.target.files?.[0]); if(state.bioData.avatarData) toast('آواتار انتخاب شد','ok'); };
+  $('bioBg').onchange=async e=>{ state.bioData.bgData=await readFileAsDataURL(e.target.files?.[0]); if(state.bioData.bgData) toast('پس‌زمینه انتخاب شد','ok'); };
+  document.querySelectorAll('#bioThemes .bio-theme').forEach(el=>el.addEventListener('click',()=>{ document.querySelectorAll('#bioThemes .bio-theme').forEach(t=>t.classList.remove('active')); el.classList.add('active'); state.bioData.theme=el.dataset.theme; }));
+  $('addBioLink').onclick=()=>{ const r=document.createElement('div'); r.className='two bio-link-row'; r.innerHTML='<input placeholder="عنوان"><input placeholder="https://...">'; $('bioLinks').appendChild(r); };
+
+  function gatherBioData(){
+    const name=$('bioName').value.trim(); if(!name) throw new Error('نام کامل را وارد کنید');
+    const socials=[];
+    document.querySelectorAll('#socialGrid .social-check').forEach(lbl=>{
+      const cb=lbl.querySelector('input[type=checkbox]');
+      const vi=lbl.querySelector('input[type=text]');
+      const v=(vi?.value||'').trim();
+      if(cb.checked&&v){ const k=cb.dataset.net; if(SOCIAL_URLS[k]) socials.push({key:k,url:SOCIAL_URLS[k].url.replace('{v}',v.replace(/^@/,'')),label:SOCIAL_URLS[k].label}); }
+    });
+    const links=[];
+    document.querySelectorAll('#bioLinks .bio-link-row').forEach(r=>{ const ins=r.querySelectorAll('input'); const t=ins[0].value.trim(),u=ins[1].value.trim(); if(t&&u) links.push({title:t,url:u}); });
+    return { theme:state.bioData.theme,name,brand:$('bioBrand').value.trim(),bio:$('bioBio').value.trim(),phone:$('bioPhone').value.trim(),email:$('bioEmail').value.trim(),addr:$('bioAddr').value.trim(),site:$('bioSite').value.trim(),avatar:state.bioData.avatarData,bg:state.bioData.bgData,socials,links };
+  }
+
+  function buildBioHtml(d){
+    const T={
+      minimal:{bg:'#ffffff',text:'#1a1a2e',accent:'#4d8dff',card:'#ffffff',btn:'linear-gradient(135deg,#4d8dff,#6a5acd)',btnText:'#fff',shadow:'0 4px 20px rgba(0,0,0,.08)'},
+      dark:{bg:'#0a0e1a',text:'#f0f3f8',accent:'#ff6b1a',card:'#1a2238',btn:'linear-gradient(135deg,#ff6b1a,#ff8b48)',btnText:'#fff',shadow:'0 4px 20px rgba(0,0,0,.5)'},
+      gradient:{bg:'linear-gradient(135deg,#667eea,#764ba2)',text:'#fff',accent:'#fff',card:'rgba(255,255,255,.14)',btn:'rgba(255,255,255,.95)',btnText:'#5b3a9e',shadow:'0 8px 32px rgba(0,0,0,.3)'},
+      glass:{bg:'linear-gradient(135deg,#4facfe,#00f2fe)',text:'#fff',accent:'#fff',card:'rgba(255,255,255,.18)',extra:'backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.35);',btn:'rgba(255,255,255,.28)',btnText:'#fff',shadow:'0 8px 32px rgba(0,0,0,.2)'},
+      retro:{bg:'#0d0208',text:'#00ff41',accent:'#00ff41',card:'#0d0208',extra:'border:1px solid #00ff41;',btn:'#00ff41',btnText:'#000',shadow:'0 0 20px rgba(0,255,65,.25)',font:"'Courier New',monospace"},
+      neon:{bg:'#0a0014',text:'#fff',accent:'#ff00ff',card:'#1a0030',extra:'border:1px solid #ff00ff;',btn:'linear-gradient(135deg,#ff00ff,#00ffff)',btnText:'#fff',shadow:'0 0 30px rgba(255,0,255,.5)'}
+    };
+    const t=T[d.theme]||T.minimal;
+    const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    // SVG icons inline in output HTML (stroke-based)
+    const outIcon = (paths, color) => `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="${color||'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-0.15em">${paths}</svg>`;
+    const SOCIAL_SVG = {
+      instagram:'<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/>',
+      telegram:'<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+      whatsapp:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+      linkedin:'<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
+      twitter:'<path d="M4 4l16 16M20 4L4 20"/>',
+      youtube:'<path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z" fill="currentColor"/>',
+      github:'<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.4.4-.7 1-.9 1.5-.2.6-.3 1.2-.3 1.8v4.2"/><path d="M9 18c-4.51 2-5-2-7-2"/>',
+      tiktok:'<path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>'
+    };
+    const CONTACT_ICONS = {
+      phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+      mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/>',
+      pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+      globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+      external:'<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>'
+    };
+
+    const socialsHtml=d.socials.map(s=>'<a class="social-btn" href="'+s.url+'" target="_blank" rel="noopener" title="'+s.label+'">'+outIcon(SOCIAL_SVG[s.key],t.btnText)+'</a>').join('');
+    const linksHtml=d.links.map(l=>'<a class="link-btn" href="'+l.url+'" target="_blank" rel="noopener">'+outIcon(CONTACT_ICONS.external,t.btnText)+' '+esc(l.title)+'</a>').join('');
+    const contact=[];
+    if(d.phone) contact.push('<a href="tel:'+d.phone+'">'+outIcon(CONTACT_ICONS.phone)+' '+esc(d.phone)+'</a>');
+    if(d.email) contact.push('<a href="mailto:'+d.email+'">'+outIcon(CONTACT_ICONS.mail)+' '+esc(d.email)+'</a>');
+    if(d.addr) contact.push('<span>'+outIcon(CONTACT_ICONS.pin)+' '+esc(d.addr)+'</span>');
+    if(d.site) contact.push('<a href="'+d.site+'" target="_blank" rel="noopener">'+outIcon(CONTACT_ICONS.globe)+' '+esc(d.site)+'</a>');
+    return '<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(d.name)+'</title><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet"><style>'
+      +'*{box-sizing:border-box;margin:0;padding:0}body{font-family:'+(t.font||'Vazirmatn,sans-serif')+',Tahoma;min-height:100vh;background:'+t.bg+';color:'+t.text+';padding:40px 20px;display:flex;justify-content:center}'
+      +'.wrap{max-width:500px;width:100%}.card{position:relative;background:'+t.card+';'+(t.extra||'')+'border-radius:24px;padding:32px 24px;box-shadow:'+t.shadow+';text-align:center;overflow:hidden}'
+      +(d.bg?'.bgimg{position:absolute;inset:0;background:url('+d.bg+') center/cover}.bgimg:after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.55)}':'')
+      +'.inner{position:relative;z-index:1}.avatar{width:110px;height:110px;border-radius:50%;margin:0 auto 18px;overflow:hidden;border:4px solid '+t.accent+'66;background:'+t.accent+'33;display:grid;place-items:center;font-size:44px;font-weight:800}.avatar img{width:100%;height:100%;object-fit:cover}'
+      +'h1{font-size:24px;margin-bottom:6px}.brand{opacity:.75;font-size:14px;margin-bottom:14px}.bio{font-size:14px;line-height:1.9;margin-bottom:22px;opacity:.92}'
+      +'.socials{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}.social-btn{width:48px;height:48px;border-radius:50%;background:'+t.btn+';color:'+t.btnText+';display:grid;place-items:center;text-decoration:none;transition:.2s}.social-btn:hover{transform:translateY(-3px)}'
+      +'.links{display:flex;flex-direction:column;gap:10px;margin-bottom:8px}.link-btn{background:'+t.btn+';color:'+t.btnText+';padding:14px;border-radius:14px;text-decoration:none;font-weight:700;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px}.link-btn:hover{transform:translateY(-2px)}'
+      +'.contact{display:flex;flex-direction:column;gap:10px;font-size:13px;opacity:.9;margin-top:20px;padding-top:18px;border-top:1px solid '+t.accent+'40}.contact a,.contact span{color:inherit;text-decoration:none;display:flex;align-items:center;gap:8px;justify-content:center}'
+      +'.ft{margin-top:18px;font-size:10px;opacity:.5}</style></head><body><div class="wrap"><div class="card">'
+      +(d.bg?'<div class="bgimg"></div>':'')
+      +'<div class="inner"><div class="avatar">'+(d.avatar?'<img src="'+d.avatar+'" alt="avatar">':esc(d.name.charAt(0)))+'</div>'
+      +'<h1>'+esc(d.name)+'</h1><div class="brand">'+esc(d.brand)+'</div><div class="bio">'+esc(d.bio)+'</div>'
+      +(socialsHtml?'<div class="socials">'+socialsHtml+'</div>':'')
+      +(linksHtml?'<div class="links">'+linksHtml+'</div>':'')
+      +(contact.length?'<div class="contact">'+contact.join('')+'</div>':'')
+      +'<div class="ft">ساخته‌شده با QR & Barcode Studio Pro</div></div></div></div></body></html>';
+  }
+
+  $('bioPreviewBtn').onclick=()=>{
+    try{
+      const html=buildBioHtml(gatherBioData());
+      $('bioFrame').srcdoc=html;
+      $('bioModal').classList.add('show');
+    }catch(e){ toast(e.message||'اطلاعات ناقص','err'); }
+  };
+  $('bioModalClose').onclick=()=>{ $('bioModal').classList.remove('show'); $('bioFrame').srcdoc=''; };
+  $('bioModal').onclick=e=>{ if(e.target.id==='bioModal') $('bioModalClose').click(); };
+  $('bioDownload').onclick=()=>{
+    try{
+      const d=gatherBioData();
+      downloadBlob(new Blob([buildBioHtml(d)],{type:'text/html;charset=utf-8'}),safeFileBase(d.name,'biolink')+'.html');
+      saveHistory({kind:'BioLink',title:d.name,value:d.brand||'کارت ویزیت',format:d.theme});
+      toast('HTML دانلود شد','ok');
+    }catch(e){ toast(e.message||'خطا','err'); }
+  };
+  $('bioQrBtn').onclick=()=>{
+    try{
+      const d=gatherBioData();
+      qrType.value='text'; qrFields();
+      $('qrTitle').value=safeFileBase(d.name,'biolink')+'-page';
+      $('qrText').value=''; $('qrText').placeholder='URL صفحه میزبانی‌شده را اینجا بچسبانید';
+      activate('qr');
+      toast('ابتدا HTML را دانلود و آپلود کنید، سپس URL آن را اینجا بگذارید','warn');
+    }catch(e){ toast(e.message||'خطا','err'); }
+  };
+
+  /* ===== BATCH ===== */
+  $('batchInput').onchange=e=>{ const t=e.target.value==='text'; $('batchTextWrap').classList.toggle('hidden',!t); $('batchFileWrap').classList.toggle('hidden',t); };
+  $('batchRun').onclick=async()=>{
+    try{
+      if(typeof JSZip==='undefined') throw new Error('کتابخانه ZIP بارگذاری نشده');
+      const type=$('batchType').value, size=+$('batchSize').value;
+      let items=[];
+      if($('batchInput').value==='text'){
+        items=$('batchText').value.split(/\n+/).map(s=>s.trim()).filter(Boolean).map(v=>({value:v,name:null}));
+      } else {
+        const f=$('batchFile').files?.[0]; if(!f) throw new Error('فایل CSV انتخاب نشده');
+        items=(await f.text()).split(/\n+/).map(l=>{ const p=l.split(/[,;]+/).map(x=>x.trim().replace(/^"|"$/g,'')); return {value:p[0],name:p[1]||null}; }).filter(x=>x.value);
+      }
+      if(!items.length) throw new Error('لیست خالی است');
+      setStatus('batchStatus','در حال تولید…','');
+      const prog=$('batchProgress'); prog.style.display='block'; prog.value=0; prog.max=items.length;
+      $('batchLog').textContent='';
+      const zip=new JSZip(), folder=zip.folder(type==='qr'?'qr-codes':'barcodes');
+      let ok=0,fail=0;
+      for(let i=0;i<items.length;i++){
+        const it=items[i], nm=safeFileBase(it.name||it.value,'item-'+(i+1));
+        try{
+          if(type==='qr'){
+            if(qrcode.stringToBytesFuncs&&qrcode.stringToBytesFuncs['UTF-8']) qrcode.stringToBytes=qrcode.stringToBytesFuncs['UTF-8'];
+            const qr=qrcode(0,'M'); qr.addData(it.value); qr.make();
+            const png=await svgToPng(qr.createSvgTag({cellSize:8,margin:4,scalable:true}),size,size);
+            folder.file(nm+'.png',png.split(',')[1],{base64:true});
+          } else {
+            const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+            JsBarcode(svg,it.value,{format:'CODE128',width:2,height:100,margin:10,displayValue:true,font:'Vazirmatn',fontSize:16});
+            const png=await svgToPng(new XMLSerializer().serializeToString(svg),500,180);
+            folder.file(nm+'.png',png.split(',')[1],{base64:true});
+          }
+          ok++;
+        }catch(e){ fail++; $('batchLog').textContent+='✗ '+it.value+'\n'; }
+        prog.value=i+1;
+      }
+      const blob=await zip.generateAsync({type:'blob'});
+      downloadBlob(blob,type+'-batch-'+Date.now()+'.zip');
+      prog.style.display='none';
+      setStatus('batchStatus','تمام شد','ok');
+      $('batchLog').textContent='✅ '+ok+' موفق | ✗ '+fail+' ناموفق\nZIP دانلود شد.';
+      saveHistory({kind:'Batch',title:(type==='qr'?'دسته QR':'دسته بارکد'),value:ok+' فایل',format:type});
+      toast('ZIP آماده شد: '+ok+' فایل','ok');
+    }catch(e){ toast(e.message||'خطا','err'); setStatus('batchStatus','خطا','err'); }
+  };
+
+  /* ===== NFC ===== */
+  const nfcOk='NDEFReader' in window;
+  $('nfcSupport').innerHTML = nfcOk
+    ? (svgInline('check',12)+' دستگاه پشتیبانی می‌کند')
+    : (svgInline('x',12)+' مرورگر پشتیبانی نمی‌کند');
+  $('nfcSupport').className = 'status-pill ' + (nfcOk?'ok':'err');
+  let nfcCtrl=null;
+  function nfcBusy(on,msg){ $('nfcRead').disabled=on||!nfcOk; $('nfcWrite').disabled=on||!nfcOk; $('nfcCancel').disabled=!on; if(msg) setStatus('nfcStatus',msg,''); }
+  if(!nfcOk){ $('nfcRead').disabled=true; $('nfcWrite').disabled=true; }
+  $('nfcRead').onclick=async()=>{
+    if(!nfcOk) return toast('NFC در این مرورگر در دسترس نیست','err');
+    try{
+      nfcCtrl=new AbortController();
+      const reader=new NDEFReader();
+      nfcBusy(true,'تگ را پشت گوشی نگه دارید…');
+      reader.onreading=e=>{
+        const parts=[];
+        e.message.records.forEach(r=>{ try{ const t=new TextDecoder().decode(r.data); if(t) parts.push(t); }catch(err){} });
+        const text=parts.join('\n')||'[داده باینری بدون متن]';
+        state.nfcResult=text;
+        $('nfcResult').textContent=text;
+        setStatus('nfcStatus','خوانده شد','ok');
+        saveHistory({kind:'NFC',title:'خواندن تگ',value:text.slice(0,80),format:'NDEF'});
+        toast('تگ خوانده شد','ok');
+      };
+      reader.onreadingerror=()=>toast('خواندن ناموفق','warn');
+      await reader.scan({signal:nfcCtrl.signal});
+    }catch(e){ if(e.name!=='AbortError') toast(e.message||'خطای NFC','err'); nfcBusy(false); }
+  };
+  $('nfcWrite').onclick=async()=>{
+    if(!nfcOk) return toast('NFC در این مرورگر در دسترس نیست','err');
+    const val=$('nfcText').value.trim(); if(!val) return toast('محتوایی برای نوشتن وارد نشده','warn');
+    try{
+      nfcCtrl=new AbortController();
+      const writer=new NDEFReader();
+      nfcBusy(true,'تگ را برای نوشتن نزدیک کنید…');
+      const rec=($('nfcType').value==='url'&&/^https?:/i.test(val))?{recordType:'url',data:val}:{recordType:'text',data:val};
+      await writer.write({records:[rec]},{signal:nfcCtrl.signal});
+      saveHistory({kind:'NFC',title:'نوشتن تگ',value:val.slice(0,80),format:$('nfcType').value});
+      toast('روی تگ نوشته شد','ok');
+      nfcBusy(false);
+    }catch(e){ if(e.name!=='AbortError') toast(e.message||'نوشتن ناموفق','err'); nfcBusy(false); }
+  };
+  $('nfcCancel').onclick=()=>{ try{ nfcCtrl&&nfcCtrl.abort(); }catch(e){} nfcCtrl=null; nfcBusy(false,'لغو شد'); toast('عملیات NFC لغو شد','warn'); };
+  $('nfcCopy').onclick=async()=>{ if(!state.nfcResult) return toast('نتیجه‌ای نیست','warn'); try{ await navigator.clipboard.writeText(state.nfcResult); toast('کپی شد','ok'); }catch(e){ toast('کپی مجاز نیست','err'); } };
+  $('nfcOpen').onclick=()=>{ const t=state.nfcResult||''; if(/^https?:\/\//i.test(t)) window.open(t,'_blank','noopener'); else toast('نتیجه لینک نیست','warn'); };
+  $('nfcToQr').onclick=()=>{ if(!state.nfcResult) return toast('نتیجه‌ای نیست','warn'); qrType.value='text'; qrFields(); $('qrText').value=state.nfcResult; $('qrTitle').value='nfc-'+Date.now(); activate('qr'); toast('متن تگ به تب QR منتقل شد','ok'); };
+
+  /* ===== History & Settings ===== */
+  $('historyList').addEventListener('click',e=>{ const btn=e.target.closest('button'); if(!btn) return; const id=btn.dataset.del; if(!id) return; state.history=state.history.filter(x=>String(x.id)!==String(id)); localStorage.setItem(HISTORY_KEY,JSON.stringify(state.history)); renderHistory(); });
+  $('clearHistory').onclick=()=>{ const p=JSON.parse(localStorage.getItem(PREF_KEY)||'{}'); if(p.confirmDelete!==false&&!confirm('تاریخچه پاک شود؟')) return; state.history=[]; localStorage.removeItem(HISTORY_KEY); renderHistory(); toast('تاریخچه پاک شد','ok'); };
+  function savePrefs(p){ const o=JSON.parse(localStorage.getItem(PREF_KEY)||'{}'); localStorage.setItem(PREF_KEY,JSON.stringify({...o,...p})); }
+  function loadPrefs(){ const p=JSON.parse(localStorage.getItem(PREF_KEY)||'{}'); $('historyEnabled').checked=p.historyEnabled!==false; $('confirmDelete').checked=p.confirmDelete!==false; }
+  $('historyEnabled').onchange=e=>savePrefs({historyEnabled:e.target.checked});
+  $('confirmDelete').onchange=e=>savePrefs({confirmDelete:e.target.checked});
+  $('exportHistory').onclick=()=>downloadBlob(new Blob([JSON.stringify(state.history,null,2)],{type:'application/json'}),'qrbsp-history.json');
+  $('clearAll').onclick=()=>{ if(!confirm('همه داده‌ها حذف شوند؟')) return; localStorage.removeItem(HISTORY_KEY); localStorage.removeItem(PREF_KEY); state.history=[]; renderHistory(); loadPrefs(); toast('داده‌ها حذف شدند','ok'); };
+
+  /* Init */
+  (function featureCheck(){
+    const m=[]; if(!window.jspdf) m.push('PDF'); if(!window.JSZip) m.push('ZIP');
+    if(m.length) setTimeout(()=>toast('بارگیری نشد: '+m.join('، ')+' — بقیه بخش‌ها فعال‌اند','warn'),900);
+  })();
+  loadHistory(); loadPrefs();
+})();
+</script>
+</body>
+</html>
